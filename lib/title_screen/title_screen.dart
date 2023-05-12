@@ -2,18 +2,38 @@ import 'package:flutter/material.dart';
 
 import '../assets.dart';
 import '../styles.dart';
+import 'title_screen_ui.dart';
 
-class TitleScreen extends StatelessWidget {
+class TitleScreen extends StatefulWidget {
   const TitleScreen({super.key});
 
-  final _finalReceiveLightAmount = 0.8;
-  final _finalEmitLightAmount = 0.5;
+  @override
+  State<TitleScreen> createState() => _TitleScreenState();
+}
+
+class _TitleScreenState extends State<TitleScreen> {
+  Color get _emitColor =>
+      AppColors.emitColors[_difficultyOverride ?? _difficulty];
+  Color get _orbColor =>
+      AppColors.orbColors[_difficultyOverride ?? _difficulty];
+
+  int _difficulty = 0;
+
+  int? _difficultyOverride;
+
+  void _handleDifficultyPressed(int value) {
+    setState(() => _difficulty = value);
+  }
+
+  void _handleDifficultyFocused(int? value) {
+    setState(() => _difficultyOverride = value);
+  }
+
+  final _finalReceiveLightAmt = 0.7;
+  final _finalEmitLightAmt = 0.5;
 
   @override
   Widget build(BuildContext context) {
-    final orbColor = AppColors.orbColors[0];
-    final emitColor = AppColors.emitColors[0];
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -21,35 +41,42 @@ class TitleScreen extends StatelessWidget {
           children: [
             Image.asset(AssetPaths.titleBgBase),
             _LitImage(
+              color: _orbColor,
               imgSrc: AssetPaths.titleBgReceive,
-              color: orbColor,
-              lightAmount: _finalReceiveLightAmount,
+              lightAmt: _finalReceiveLightAmt,
             ),
             _LitImage(
               imgSrc: AssetPaths.titleMgBase,
-              color: orbColor,
-              lightAmount: _finalReceiveLightAmount,
+              color: _orbColor,
+              lightAmt: _finalReceiveLightAmt,
             ),
             _LitImage(
               imgSrc: AssetPaths.titleMgReceive,
-              color: orbColor,
-              lightAmount: _finalReceiveLightAmount,
+              color: _orbColor,
+              lightAmt: _finalReceiveLightAmt,
             ),
             _LitImage(
               imgSrc: AssetPaths.titleMgEmit,
-              color: emitColor,
-              lightAmount: _finalEmitLightAmount,
+              color: _emitColor,
+              lightAmt: _finalEmitLightAmt,
             ),
             Image.asset(AssetPaths.titleFgBase),
             _LitImage(
               imgSrc: AssetPaths.titleFgReceive,
-              color: orbColor,
-              lightAmount: _finalReceiveLightAmount,
+              color: _orbColor,
+              lightAmt: _finalReceiveLightAmt,
             ),
             _LitImage(
               imgSrc: AssetPaths.titleFgEmit,
-              color: emitColor,
-              lightAmount: _finalEmitLightAmount,
+              color: _emitColor,
+              lightAmt: _finalEmitLightAmt,
+            ),
+            Positioned.fill(
+              child: TitleScreenUi(
+                difficulty: _difficulty,
+                onDifficultyFocused: _handleDifficultyFocused,
+                onDifficultyPressed: _handleDifficultyPressed,
+              ),
             ),
           ],
         ),
@@ -62,18 +89,18 @@ class _LitImage extends StatelessWidget {
   const _LitImage({
     required this.color,
     required this.imgSrc,
-    required this.lightAmount,
+    required this.lightAmt,
   });
   final Color color;
   final String imgSrc;
-  final double lightAmount;
+  final double lightAmt;
 
   @override
   Widget build(BuildContext context) {
     final hsl = HSLColor.fromColor(color);
     return ColorFiltered(
       colorFilter: ColorFilter.mode(
-        hsl.withLightness(hsl.lightness * lightAmount).toColor(),
+        hsl.withLightness(hsl.lightness * lightAmt).toColor(),
         BlendMode.modulate,
       ),
       child: Image.asset(imgSrc),
