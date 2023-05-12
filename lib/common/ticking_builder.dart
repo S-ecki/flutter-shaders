@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 class TickingBuilder extends StatefulWidget {
-  const TickingBuilder({super.key, required this.builder});
+  const TickingBuilder({required this.builder, super.key});
   final Widget Function(BuildContext context, double time) builder;
   @override
   State<TickingBuilder> createState() => _TickingBuilderState();
@@ -15,7 +15,7 @@ class TickingBuilder extends StatefulWidget {
 class _TickingBuilderState extends State<TickingBuilder>
     with SingleTickerProviderStateMixin {
   late final Ticker _ticker;
-  double _time = 0.0;
+  double _time = 0;
 
   @override
   void initState() {

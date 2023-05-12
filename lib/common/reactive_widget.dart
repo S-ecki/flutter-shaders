@@ -4,15 +4,14 @@
 
 import 'package:flutter/material.dart';
 
-import 'ticking_builder.dart';
+import 'package:next_gen_ui/common/ticking_builder.dart';
 
 typedef ReactiveWidgetBuilder = Widget Function(
-    BuildContext context, double time, Size bounds);
+    BuildContext context, double time, Size bounds,);
 
 class ReactiveWidget extends StatefulWidget {
   const ReactiveWidget({
-    super.key,
-    required this.builder,
+    required this.builder, super.key,
   });
   final ReactiveWidgetBuilder builder;
   @override

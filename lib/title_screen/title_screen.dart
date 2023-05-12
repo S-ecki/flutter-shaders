@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../assets.dart';
-import '../styles.dart';
-import 'title_screen_ui.dart';
+import 'package:next_gen_ui/assets.dart';
+import 'package:next_gen_ui/styles.dart';
+import 'package:next_gen_ui/title_screen/title_screen_ui.dart';
 
 class TitleScreen extends StatefulWidget {
   const TitleScreen({super.key});

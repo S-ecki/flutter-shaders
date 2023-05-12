@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 
 class UiScaler extends StatelessWidget {
   const UiScaler({
-    super.key,
-    required this.child,
-    required this.alignment,
+    required this.child, required this.alignment, super.key,
     this.referenceHeight = 1080,
   });
 
@@ -21,7 +19,7 @@ class UiScaler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final double scale = min(screenSize.height / referenceHeight, 1.0);
+    final double scale = min(screenSize.height / referenceHeight, 1);
     return Transform.scale(
       scale: scale,
       alignment: alignment,

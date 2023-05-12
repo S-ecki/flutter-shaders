@@ -2,17 +2,16 @@ import 'package:extra_alignments/extra_alignments.dart';
 import 'package:flutter/material.dart';
 import 'package:focusable_control_builder/focusable_control_builder.dart';
 import 'package:gap/gap.dart';
-
-import '../assets.dart';
-import '../common/ui_scaler.dart';
-import '../styles.dart';
+import 'package:next_gen_ui/assets.dart';
+import 'package:next_gen_ui/common/ui_scaler.dart';
+import 'package:next_gen_ui/styles.dart';
 
 class TitleScreenUi extends StatelessWidget {
   const TitleScreenUi({
-    super.key,
     required this.difficulty,
     required this.onDifficultyPressed,
     required this.onDifficultyFocused,
+    super.key,
   });
 
   final int difficulty;
@@ -144,7 +143,7 @@ class _DifficultyBtn extends StatelessWidget {
       onHoverChanged: (_, state) => onHover.call(state.isHovered),
       builder: (_, state) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: SizedBox(
             width: 250,
             height: 60,
@@ -206,7 +205,7 @@ class _StartBtnState extends State<_StartBtn> {
             _btnAnim?.status != AnimationStatus.forward) {
           _btnAnim?.forward(from: 0);
         }
-        _wasHovered = (state.isHovered || state.isFocused);
+        _wasHovered = state.isHovered || state.isFocused;
         return SizedBox(
           width: 520,
           height: 100,
@@ -215,15 +214,18 @@ class _StartBtnState extends State<_StartBtn> {
               Positioned.fill(child: Image.asset(AssetPaths.titleStartBtn)),
               if (state.isHovered || state.isFocused) ...[
                 Positioned.fill(
-                    child: Image.asset(AssetPaths.titleStartBtnHover)),
+                  child: Image.asset(AssetPaths.titleStartBtnHover),
+                ),
               ],
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text('START MISSION',
-                        style: TextStyles.btn
-                            .copyWith(fontSize: 24, letterSpacing: 18)),
+                    Text(
+                      'START MISSION',
+                      style: TextStyles.btn
+                          .copyWith(fontSize: 24, letterSpacing: 18),
+                    ),
                   ],
                 ),
               ),

@@ -6,9 +6,8 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:next_gen_ui/orb_shader/orb_shader_config.dart';
 import 'package:vector_math/vector_math_64.dart' as v64;
-
-import 'orb_shader_config.dart';
 
 class OrbShaderPainter extends CustomPainter {
   OrbShaderPainter(
@@ -26,7 +25,7 @@ class OrbShaderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double fov = v64.mix(pi / 4.3, pi / 2.0, config.zoom.clamp(0.0, 1.0));
+    final fov = v64.mix(pi / 4.3, pi / 2.0, config.zoom.clamp(0.0, 1.0));
 
     v64.Vector3 colorToVector3(Color c) =>
         v64.Vector3(
@@ -36,17 +35,17 @@ class OrbShaderPainter extends CustomPainter {
         ) /
         255.0;
 
-    v64.Vector3 lightLumP = colorToVector3(config.lightColor).normalized() *
-        max(0.0, config.lightBrightness);
-    v64.Vector3 albedo = colorToVector3(config.materialColor);
+    final lightLumP = colorToVector3(config.lightColor).normalized() *
+        max(0, config.lightBrightness);
+    final albedo = colorToVector3(config.materialColor);
 
-    v64.Vector3 ambientLight = colorToVector3(config.ambientLightColor) *
-        max(0.0, config.ambientLightBrightness);
+    final ambientLight = colorToVector3(config.ambientLightColor) *
+        max(0, config.ambientLightBrightness);
 
     shader.setFloat(0, size.width);
     shader.setFloat(1, size.height);
     shader.setFloat(2, time);
-    shader.setFloat(3, max(0.0, config.exposure));
+    shader.setFloat(3, max(0, config.exposure));
     shader.setFloat(4, fov);
     shader.setFloat(5, config.roughness.clamp(0.0, 1.0));
     shader.setFloat(6, config.metalness.clamp(0.0, 1.0));

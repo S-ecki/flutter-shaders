@@ -32,8 +32,8 @@ class AssetPaths {
 typedef Shaders = ({FragmentShader orb, FragmentShader ui});
 
 Future<Shaders> loadShaders() async => (
-      orb: (await _loadShader(AssetPaths.orbShader)),
-      ui: (await _loadShader(AssetPaths.uiShader)),
+      orb: await _loadShader(AssetPaths.orbShader),
+      ui: await _loadShader(AssetPaths.uiShader),
     );
 
 Future<FragmentShader> _loadShader(String path) async {

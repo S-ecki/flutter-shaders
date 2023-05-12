@@ -49,8 +49,8 @@ class ShaderEffect extends Effect<double> {
     AnimationController controller,
     EffectEntry entry,
   ) {
-    double ratio = 1 / MediaQuery.of(context).devicePixelRatio;
-    Animation<double> animation = buildAnimation(controller, entry);
+    final ratio = 1 / MediaQuery.of(context).devicePixelRatio;
+    final animation = buildAnimation(controller, entry);
     return getOptimizedBuilder<double>(
       animation: animation,
       builder: (_, __) {
@@ -60,7 +60,7 @@ class ShaderEffect extends Effect<double> {
             if (update != null) {
               insets = update!(shader!, animation.value, size, image);
             }
-            Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
+            var rect = Rect.fromLTWH(0, 0, size.width, size.height);
             rect = insets?.inflateRect(rect) ?? rect;
 
             void drawImage() {
@@ -92,21 +92,27 @@ extension ShaderEffectExtensions<T> on AnimateManager<T> {
     ShaderUpdateCallback? update,
     ShaderLayer? layer,
   }) =>
-      addEffect(ShaderEffect(
-        delay: delay,
-        duration: duration,
-        curve: curve,
-        shader: shader,
-        update: update,
-        layer: layer,
-      ));
+      addEffect(
+        ShaderEffect(
+          delay: delay,
+          duration: duration,
+          curve: curve,
+          shader: shader,
+          update: update,
+          layer: layer,
+        ),
+      );
 }
 
 enum ShaderLayer { foreground, background, replace }
 
 /// Function signature for [ShaderEffect] update handlers.
 typedef ShaderUpdateCallback = EdgeInsets? Function(
-    ui.FragmentShader shader, double value, Size size, ui.Image image);
+  ui.FragmentShader shader,
+  double value,
+  Size size,
+  ui.Image image,
+);
 
 /******************************************************************************/
 // TODO: add this as a dependency instead of copying it in once it is stable:
@@ -192,8 +198,8 @@ class AnimatedSampler extends StatelessWidget {
 class _ShaderSamplerBuilder extends SingleChildRenderObjectWidget {
   const _ShaderSamplerBuilder(
     this.builder, {
-    super.child,
     required this.enabled,
+    super.child,
   });
 
   final AnimatedSamplerBuilder builder;
@@ -210,7 +216,9 @@ class _ShaderSamplerBuilder extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant RenderObject renderObject) {
+    BuildContext context,
+    covariant RenderObject renderObject,
+  ) {
     (renderObject as _RenderShaderSamplerBuilderWidget)
       ..devicePixelRatio = MediaQuery.of(context).devicePixelRatio
       ..builder = builder
@@ -231,15 +239,14 @@ class _RenderShaderSamplerBuilderWidget extends RenderProxyBox {
         _enabled = enabled;
 
   @override
-  OffsetLayer updateCompositedLayer(
-      {required covariant _ShaderSamplerBuilderLayer? oldLayer}) {
-    final _ShaderSamplerBuilderLayer layer =
-        oldLayer ?? _ShaderSamplerBuilderLayer(builder);
-    layer
+  OffsetLayer updateCompositedLayer({
+    required covariant _ShaderSamplerBuilderLayer? oldLayer,
+  }) {
+    final layer = oldLayer ?? _ShaderSamplerBuilderLayer(builder);
+    return layer
       ..callback = builder
       ..size = size
       ..devicePixelRatio = devicePixelRatio;
-    return layer;
   }
 
   /// The device pixel ratio used to create the child image.
@@ -307,7 +314,7 @@ class _ShaderSamplerBuilderLayer extends OffsetLayer {
   }
 
   double get devicePixelRatio => _devicePixelRatio;
-  double _devicePixelRatio = 1.0;
+  double _devicePixelRatio = 1;
   set devicePixelRatio(double value) {
     if (value == devicePixelRatio) {
       return;
@@ -327,9 +334,8 @@ class _ShaderSamplerBuilderLayer extends OffsetLayer {
   }
 
   ui.Image _buildChildScene(Rect bounds, double pixelRatio) {
-    final ui.SceneBuilder builder = ui.SceneBuilder();
-    final Matrix4 transform =
-        Matrix4.diagonal3Values(pixelRatio, pixelRatio, 1);
+    final builder = ui.SceneBuilder();
+    final transform = Matrix4.diagonal3Values(pixelRatio, pixelRatio, 1);
     builder.pushTransform(transform.storage);
     addChildrenToScene(builder);
     builder.pop();
@@ -342,18 +348,18 @@ class _ShaderSamplerBuilderLayer extends OffsetLayer {
   @override
   void addToScene(ui.SceneBuilder builder) {
     if (size.isEmpty) return;
-    final ui.Image image = _buildChildScene(
+    final image = _buildChildScene(
       offset & size,
       devicePixelRatio,
     );
-    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
-    final Canvas canvas = Canvas(pictureRecorder);
+    final pictureRecorder = ui.PictureRecorder();
+    final canvas = Canvas(pictureRecorder);
     try {
       callback(image, size, canvas);
     } finally {
       image.dispose();
     }
-    final ui.Picture picture = pictureRecorder.endRecording();
+    final picture = pictureRecorder.endRecording();
     builder.addPicture(offset, picture);
   }
 }
