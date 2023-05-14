@@ -8,6 +8,7 @@ import 'package:next_gen_ui/assets.dart';
 import 'package:next_gen_ui/orb_shader/orb_shader_config.dart';
 import 'package:next_gen_ui/orb_shader/orb_shader_widget.dart';
 import 'package:next_gen_ui/styles.dart';
+import 'package:next_gen_ui/title_screen/particle_overlay.dart';
 import 'package:next_gen_ui/title_screen/title_screen_ui.dart';
 
 class TitleScreen extends StatefulWidget {
@@ -195,6 +196,17 @@ class _TitleScreenState extends State<TitleScreen>
                     pulseEffect: _pulseEffect,
                     lightAmt: _finalEmitLightAmt,
                   ),
+
+                  /// Particle Field
+                  Positioned.fill(
+                    // Add from here...
+                    child: IgnorePointer(
+                      child: ParticleOverlay(
+                        color: orbColor,
+                        energy: _orbEnergy,
+                      ),
+                    ),
+                  ), // to here.
 
                   /// Fg-Rocks
                   Image.asset(AssetPaths.titleFgBase),
