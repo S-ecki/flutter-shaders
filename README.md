@@ -1,8 +1,10 @@
 # flutter-shaders
 My implementation of the Google Codelab for fragment shaders and particle animations, found [here](https://codelabs.developers.google.com/codelabs/flutter-next-gen-uis).
 
-<img src=https://github.com/S-ecki/flutter-shaders/assets/75510543/eeae62a4-cacc-474d-833c-c936f3073a8a height=450>
-<img src=https://github.com/S-ecki/flutter-shaders/assets/75510543/eaa08630-5e63-43bf-a53c-ab43f864de4e height=450>
+![image](https://github.com/S-ecki/flutter-shaders/assets/75510543/909c46c4-3645-4372-9ebf-0b7cc53050b5)
+![image](https://github.com/S-ecki/flutter-shaders/assets/75510543/c30789cf-e16e-4a8e-9075-1797db4b2025)
+
+
 
 ### What I learned
 - Basics of fragment shaders and particle effects
