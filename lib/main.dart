@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:next_gen_ui/title_screen/title_screen.dart';
 import 'package:window_size/window_size.dart';
 
@@ -14,6 +15,7 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
     setWindowMinSize(const Size(800, 500));
   }
+  Animate.restartOnHotReload = true;
   runApp(const NextGenApp());
 }
 
