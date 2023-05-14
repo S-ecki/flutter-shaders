@@ -4,20 +4,25 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:focusable_control_builder/focusable_control_builder.dart';
 import 'package:gap/gap.dart';
 import 'package:next_gen_ui/assets.dart';
+import 'package:next_gen_ui/common/shader_effect.dart';
+import 'package:next_gen_ui/common/ticking_builder.dart';
 import 'package:next_gen_ui/common/ui_scaler.dart';
 import 'package:next_gen_ui/styles.dart';
+import 'package:provider/provider.dart';
 
 class TitleScreenUi extends StatelessWidget {
   const TitleScreenUi({
     required this.difficulty,
     required this.onDifficultyPressed,
     required this.onDifficultyFocused,
+    required this.onPressed,
     super.key,
   });
 
   final int difficulty;
   final void Function(int difficulty) onDifficultyPressed;
   final void Function(int? difficulty) onDifficultyFocused;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +51,7 @@ class TitleScreenUi extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20, right: 40),
-                child: _StartBtn(onPressed: () {}),
+                child: _StartBtn(onPressed: onPressed),
               ),
             ),
           ),
@@ -61,7 +66,8 @@ class _TitleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final shaders = Provider.of<Shaders?>(context);
+    final content = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -77,11 +83,35 @@ class _TitleText extends StatelessWidget {
             Text('57', style: TextStyles.h2),
             Image.asset(AssetPaths.titleSelectedRight, height: 65),
           ],
-        ).animate().fade(delay: .7.seconds, duration: 1.seconds),
+        ).animate().fadeIn(delay: .8.seconds, duration: .7.seconds),
         Text('INTO THE UNKNOWN', style: TextStyles.h3)
             .animate()
-            .fadeIn(delay: .9.seconds, duration: 1.seconds),
+            .fadeIn(delay: 1.seconds, duration: .7.seconds),
       ],
+    );
+
+    if (shaders == null) return content;
+    return TickingBuilder(
+      builder: (context, time) {
+        return AnimatedSampler(
+          (image, size, canvas) {
+            const overdrawPx = 30.0;
+            shaders.ui
+              ..setFloat(0, size.width)
+              ..setFloat(1, size.height)
+              ..setFloat(2, time)
+              ..setImageSampler(0, image);
+            final rect = Rect.fromLTWH(
+              -overdrawPx,
+              -overdrawPx,
+              size.width + overdrawPx,
+              size.height + overdrawPx,
+            );
+            canvas.drawRect(rect, Paint()..shader = shaders.ui);
+          },
+          child: content,
+        );
+      },
     );
   }
 }

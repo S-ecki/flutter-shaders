@@ -7,7 +7,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:next_gen_ui/assets.dart';
 import 'package:next_gen_ui/title_screen/title_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:window_size/window_size.dart';
 
 void main() {
@@ -16,7 +18,13 @@ void main() {
     setWindowMinSize(const Size(800, 500));
   }
   Animate.restartOnHotReload = true;
-  runApp(const NextGenApp());
+  runApp(
+    FutureProvider(
+      create: (_) => loadShaders(),
+      initialData: null,
+      child: const NextGenApp(),
+    ),
+  );
 }
 
 class NextGenApp extends StatelessWidget {
